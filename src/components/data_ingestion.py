@@ -6,6 +6,8 @@ import pandas as pd
 
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
 
 # decorator
 @dataclass
@@ -22,7 +24,7 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info("entered the data ingestion method or component")
         try:
-            # here only we can read it from mongo db or from anywhere that we want
+            # here only we can read it from mongo db or from anywhere that we want ie api also
             df= pd.read_csv('notebook\data\stud.csv')
             logging.info('Read the datasets as dataframe')
             
@@ -47,6 +49,9 @@ class DataIngestion:
             raise CustomException(e,sys)
 
 if __name__=="__main__":
-    obj = DataIngestion()
-    obj.initiate_data_ingestion()
+    obj=DataIngestion()
+    train_data,test_data=obj.initiate_data_ingestion()
+
+    data_transformation=DataTransformation()
+    train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data)
 
